@@ -12,8 +12,9 @@ class BST{
   }
 
   print(){
-    stringify.JSON(tree)
-  }
+      let output = JSON.stringify(this)
+      return output
+    }
 }
 
 
@@ -28,5 +29,5 @@ tree.root.right.left = new Node(14)
 tree.root.right.right = new Node(20)
 tree.root.right.right.left = new Node(19)
 
-console.log(tree)
+console.log(tree.print())
 
