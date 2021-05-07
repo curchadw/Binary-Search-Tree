@@ -22,9 +22,9 @@ class BST{
     let current = this.root
 
     while(current){
-      if(val === current.val) return undefined
+      if(val === current.value) return undefined
 
-      if (val < current.val){
+      if (val < current.value){
         if(current.left === null){
           current.left = node
           return this
@@ -45,36 +45,85 @@ class BST{
 
   }
 
-  // insert(value){
-  //       var newNode = new Node(value);
-  //       if(this.root === null){
-  //           this.root = newNode;
-  //           return this;
-  //       }
-  //       let current = this.root;
-  //       while(current){
-  //           if(value === current.value) return undefined;
-  //           if(value < current.value){
-  //               if(current.left === null){
-  //                   current.left = newNode;
-  //                   return this;
-  //               }
-  //               current = current.left;
-  //           } else {
-  //               if(current.right === null){
-  //                   current.right = newNode;
-  //                   return this;
-  //               } 
-  //               current = current.right;
-  //           }
-  //       }
+
+
+  // insert(val){
+  //   let node = new Node(val)
+
+  //   if(this.root === null){
+  //     this.root = node
+  //     return this
   //   }
+
+  //   let current = this.root
+
+  //   while(current){
+  //     if(val === current.value) return undefined
+
+  //     if (val < current.value){
+  //       if(current.left === null){
+  //         current.left = node
+  //         return this
+  //       }
+
+  //       current = current.left
+
+
+  //     }else{
+  //       if(current.right === null){
+  //         current.right = node
+  //         return this
+  //       }
+  //       current = current.right
+  //     }
+      
+  //   }
+
+  // }
+
+
+
+
+
+  find(val){
+  if (!this.root){
+    return false
+  }
+
+  let current = this.root
+
+  let located = false
+
+  while (current && !located){
+    if (val < current.value){
+      current = current.left
+    } else if (val > current.rigth){
+      current = current.right
+    }else{
+      located = true
+    }
+
+  }
+
+  if (!located) return "Doesn't exist in tree"
+
+  return located
+
+  
+}
+
+  
 
   print(){
       let output = JSON.stringify(this)
       return output
     }
 }
+
+
+
+
+
 
 
 
@@ -105,3 +154,5 @@ tree.insert(20)
 
 
 console.log(tree.print())
+
+console.log(tree.find(1))
