@@ -47,42 +47,7 @@ class BST{
 
 
 
-  // insert(val){
-  //   let node = new Node(val)
-
-  //   if(this.root === null){
-  //     this.root = node
-  //     return this
-  //   }
-
-  //   let current = this.root
-
-  //   while(current){
-  //     if(val === current.value) return undefined
-
-  //     if (val < current.value){
-  //       if(current.left === null){
-  //         current.left = node
-  //         return this
-  //       }
-
-  //       current = current.left
-
-
-  //     }else{
-  //       if(current.right === null){
-  //         current.right = node
-  //         return this
-  //       }
-  //       current = current.right
-  //     }
-      
-  //   }
-
-  // }
-
-
-
+  
 
 
   find(val){
@@ -110,6 +75,62 @@ class BST{
   return located
 
   
+}
+
+
+remove(val){
+  if (!this.root){
+    return false
+  } 
+
+  const removeNode = (val, node){
+  if (!node){
+    return null
+  }
+
+  if (val === node.value){
+    if(!node.left && !right.node){
+      return null
+    }
+
+    if (!node.left){
+      return node.right
+    }
+
+    if (!node.right){
+      return node.left
+    }
+
+    let temp = node.right
+    
+    while(!temp.left){
+      temp = temp.left
+   }
+
+    node.value = temp.value
+
+    node.right = removeNode(node.right, temp.value)
+
+    
+
+
+  }else if(val < node.value){
+      node.left = removeNode(node.left, value)
+
+      return node
+  }else{
+     node.right = removeNode(node.right, value)
+
+     return node
+
+  }
+
+  this.root = removeNode(this.root,value)
+
+
+  
+ }
+
 }
 
   
@@ -155,4 +176,4 @@ tree.insert(20)
 
 console.log(tree.print())
 
-console.log(tree.find(1))
+console.log(tree.remove(2))
