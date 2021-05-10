@@ -3,6 +3,7 @@ class Node{
     this.value = value
     this.left = null
     this.right = null
+    this.count = 0 //tracks the number of children for that node
   }
 }
 
@@ -21,29 +22,30 @@ class BST{
 
     let current = this.root
 
-    while(current){
-      if(val === current.value) return undefined
-
-      if (val < current.value){
-        if(current.left === null){
-          current.left = node
-          return this
-        }
-
-        current = current.left
-
-
-      }else{
-        if(current.right === null){
-          current.right = node
-          return this
-        }
-        current = current.right
+    const addSide = side =>{
+      if (!current[side]){
+        current[side] = node
+        return this
       }
-      
+      current = current[side]
     }
 
+    while(true){
+      if(val === current.value){
+        current.count++
+        return this
+      }
+
+      if(val < current.value){
+        addSide('left')
+      } else{ 
+        addSide('right')
+      }
+    }
+      
   }
+
+  
 
 
 
@@ -77,60 +79,66 @@ class BST{
   
 }
 
+//case 1: if node is a leaf(no children), just simply delete if
+//case 2: if node has one child
+//case 2: if node has two children
+
+//First we have to find the value
+BFS(start){
+  let data = [],
+      queue = [],
+      current = start ? this.find(start) : this.root
+
+  queue.push(current);
+  while (queue.length){
+    current = queue.shift()
+    data.push(current.value)
+
+    if (current.left) queue.push(current.left)
+    if (current.right) queue.push(current.right)
+  }
+
+  return data
+}
+
+
 
 remove(val){
-  if (!this.root){
-    return false
-  } 
-
-  const removeNode = (val, node){
-  if (!node){
-    return null
-  }
-
-  if (val === node.value){
-    if(!node.left && !right.node){
-      return null
-    }
-
-    if (!node.left){
-      return node.right
-    }
-
-    if (!node.right){
-      return node.left
-    }
-
-    let temp = node.right
-    
-    while(!temp.left){
-      temp = temp.left
-   }
-
-    node.value = temp.value
-
-    node.right = removeNode(node.right, temp.value)
-
-    
-
-
-  }else if(val < node.value){
-      node.left = removeNode(node.left, value)
-
-      return node
-  }else{
-     node.right = removeNode(node.right, value)
-
-     return node
-
-  }
-
-  this.root = removeNode(this.root,value)
-
-
+  if(!this.root) return undefined
+  let current = this.root, parent
   
- }
+  
+    //setting up the cases of going left or right depending on the value
+    const pickSide = side =>{
+      if (!current[side]) return null
 
+      parent = current
+      current = current[side]
+    }
+
+    const deleteNode = side =>{
+      //the case of deleting a leaf node(has no children)
+      if(current.value === val && current.count > 1) current.count--;
+      else if (current.value === val){
+      const children = this.BFS(current.value);
+      parent[side] = null;
+      children.splice(0, 1);
+      children.forEach(child => this.create(child));
+      }
+    }
+
+    while(current.value !== val){
+      if(val < current.value){
+        pickSide('left')
+        deleteNode('left')
+      }else{
+        pickSide('right')
+        deleteNode('right')
+      }
+    }
+  
+
+  return current
 }
 
   
@@ -174,6 +182,10 @@ tree.insert(20)
 
 
 
+// console.log(tree.print())
+
+tree.remove(2)
+
 console.log(tree.print())
 
-console.log(tree.remove(2))
+
